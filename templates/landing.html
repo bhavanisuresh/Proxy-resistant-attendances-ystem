@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Attendance | Proxy-Resistant System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/dashboard_v2.css">
+    <style>
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 50%, rgba(255, 140, 0, 0.1) 0%, transparent 70%);
+        }
+        .portal-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .portal-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 140, 0, 0.5);
+            background: rgba(255, 140, 0, 0.05);
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-black flex flex-col items-center justify-center p-6 hero-gradient overflow-hidden">
+    <!-- Abstract Background Decor -->
+    <div class="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-orange-500 rounded-full blur-[150px] animate-pulse"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-900 rounded-full blur-[150px]"></div>
+    </div>
+
+    <main class="relative z-10 w-full max-w-6xl text-center">
+        <header class="mb-16 animate-fade-in">
+            <div class="w-20 h-20 bg-orange-500 rounded-[2rem] mx-auto mb-8 flex items-center justify-center shadow-2xl shadow-orange-500/20 rotate-12">
+                <svg class="w-10 h-10 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+            </div>
+            <h1 class="text-6xl lg:text-8xl font-black uppercase tracking-tighter mb-4 leading-none">
+                SMART <span class="orange-accent">ATTENDANCE</span>
+            </h1>
+            <p class="text-zinc-500 font-bold uppercase tracking-[0.5em] text-sm lg:text-base">
+                Next-Gen Proxy-Resistant Attendance
+            </p>
+        </main>
+
+        <div class="grid md:grid-cols-3 gap-8 mb-16">
+            <!-- Faculty Portal -->
+            <a href="/faculty" class="portal-card glass p-10 rounded-[3rem] border border-white/5 text-left group">
+                <div class="w-12 h-12 bg-white/5 rounded-2xl mb-6 flex items-center justify-center group-hover:bg-orange-500 transition-colors">
+                    <svg class="w-6 h-6 text-zinc-400 group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-black uppercase tracking-tighter mb-2">Faculty <span class="orange-accent">Portal</span></h3>
+                <p class="text-zinc-500 text-sm leading-relaxed">Classroom monitoring, real-time engagement HUD, and biometric verification.</p>
+            </a>
+
+            <!-- Student Portal -->
+            <a href="/student" class="portal-card glass p-10 rounded-[3rem] border border-white/5 text-left group">
+                <div class="w-12 h-12 bg-white/5 rounded-2xl mb-6 flex items-center justify-center group-hover:bg-orange-500 transition-colors">
+                    <svg class="w-6 h-6 text-zinc-400 group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-black uppercase tracking-tighter mb-2">Student <span class="orange-accent">Vault</span></h3>
+                <p class="text-zinc-500 text-sm leading-relaxed">View attendance percentage, academic summary, and exam eligibility status.</p>
+            </a>
+
+            <!-- Admin Portal -->
+            <a href="/admin" class="portal-card glass p-10 rounded-[3rem] border border-white/5 text-left group">
+                <div class="w-12 h-12 bg-white/5 rounded-2xl mb-6 flex items-center justify-center group-hover:bg-orange-500 transition-colors">
+                    <svg class="w-6 h-6 text-zinc-400 group-hover:text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-black uppercase tracking-tighter mb-2">Admin <span class="orange-accent">Command</span></h3>
+                <p class="text-zinc-500 text-sm leading-relaxed">System-wide analytics, user directory management, and global control.</p>
+            </a>
+        </div>
+
+        <footer class="animate-fade-in delay-500">
+            <p class="text-zinc-600 text-[10px] font-black uppercase tracking-[0.5em] mb-4">Powered by Smart Attendance Neural Mesh</p>
+            <div class="flex justify-center gap-8">
+                <a href="/outcomes" class="text-zinc-500 hover:text-orange-500 text-xs font-bold uppercase tracking-widest transition-colors">Project Outcomes</a>
+                <a href="/enroll" class="text-zinc-500 hover:text-orange-500 text-xs font-bold uppercase tracking-widest transition-colors">Bulk Enrollment</a>
+            </div>
+        </footer>
+    </main>
+</body>
+</html>

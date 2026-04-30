@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Command Center | Smart Attendance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/dashboard_v2.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="min-h-screen p-8 bg-black">
+    <!-- Login View -->
+    <div id="loginView" class="fixed inset-0 z-50 flex items-center justify-center bg-black">
+        <div class="glass p-12 rounded-[3rem] w-full max-w-md text-center border-2 border-orange-500/20">
+            <h1 class="text-3xl font-black mb-8 tracking-tighter uppercase">Admin <span class="orange-accent">Command</span></h1>
+            <div class="space-y-4">
+                <input type="email" id="email" placeholder="System Administrator ID" class="w-full">
+                <input type="password" id="password" placeholder="Master Key" class="w-full">
+                <button onclick="login()" class="w-full btn-premium">ACCESS COMMAND CENTER</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminView" class="hidden animate-fade-in">
+        <header class="flex justify-between items-center mb-12 border-b border-orange-500/10 pb-8">
+            <div>
+                <h1 class="text-4xl font-black uppercase tracking-tighter">System <span class="orange-accent">Master</span></h1>
+                <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest">Global Infrastructure Control</p>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="glass px-6 py-3 rounded-2xl flex items-center gap-4">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-zinc-400">Global Network Online</span>
+                </div>
+                <button onclick="location.reload()" class="btn-premium-danger !py-2 !px-4 !text-[10px]">TERMINATE SESSION</button>
+            </div>
+        </header>
+
+        <div class="grid lg:grid-cols-4 gap-8 mb-8">
+            <!-- Stats Cards -->
+            <div class="glass p-8 rounded-[2.5rem] border border-orange-500/10">
+                <p class="text-zinc-600 text-[10px] font-black uppercase tracking-widest mb-2">Total Students</p>
+                <p id="totalStudents" class="text-4xl font-black">--</p>
+            </div>
+            <div class="glass p-8 rounded-[2.5rem] border border-orange-500/10">
+                <p class="text-zinc-600 text-[10px] font-black uppercase tracking-widest mb-2">Total Faculty</p>
+                <p id="totalFaculty" class="text-4xl font-black">--</p>
+            </div>
+            <div class="glass p-8 rounded-[2.5rem] border border-orange-500/10">
+                <p class="text-zinc-600 text-[10px] font-black uppercase tracking-widest mb-2">Active Sessions</p>
+                <p id="totalSessions" class="text-4xl font-black">--</p>
+            </div>
+            <div class="glass p-8 rounded-[2.5rem] border border-orange-500/10">
+                <p class="text-zinc-600 text-[10px] font-black uppercase tracking-widest mb-2">System Health</p>
+                <p class="text-4xl font-black text-green-500">99.9%</p>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-8">
+            <!-- User Management -->
+            <div class="lg:col-span-8">
+                <div class="glass p-10 rounded-[3rem] border border-orange-500/10 min-h-[600px]">
+                    <div class="flex justify-between items-center mb-10">
+                        <h2 class="text-2xl font-black uppercase tracking-tighter">Directory <span class="orange-accent">Management</span></h2>
+                        <div class="flex gap-2">
+                            <button class="bg-zinc-900 hover:bg-zinc-800 text-[10px] font-bold px-4 py-2 rounded-xl transition-all">REFRESH</button>
+                            <button onclick="window.location.href='/enroll'" class="btn-premium !py-2 !px-4 !text-[10px]">ADD USER</button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="text-zinc-600 text-[10px] font-black uppercase tracking-widest border-b border-zinc-900">
+                                    <th class="pb-6">User Identity</th>
+                                    <th class="pb-6">Role</th>
+                                    <th class="pb-6">Department</th>
+                                    <th class="pb-6 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                                <!-- Loaded via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Activity -->
+            <div class="lg:col-span-4 space-y-8">
+                <div class="glass p-8 rounded-[3rem] border border-orange-500/10">
+                    <h3 class="text-xs font-black orange-accent uppercase tracking-[0.3em] mb-8">System Analytics</h3>
+                    <canvas id="adminChart" class="w-full"></canvas>
+                </div>
+
+                <div class="glass p-8 rounded-[3rem] border border-orange-500/10">
+                    <h3 class="text-xs font-black text-zinc-500 uppercase tracking-widest mb-6">Master Links</h3>
+                    <div class="space-y-4">
+                        <a href="/" class="flex items-center justify-between p-4 bg-white/5 rounded-2xl hover:bg-orange-500/10 border border-transparent hover:border-orange-500/20 transition-all">
+                            <span class="text-sm font-bold">Faculty Portal</span>
+                            <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="3"></path></svg>
+                        </a>
+                        <a href="/student" class="flex items-center justify-between p-4 bg-white/5 rounded-2xl hover:bg-orange-500/10 border border-transparent hover:border-orange-500/20 transition-all">
+                            <span class="text-sm font-bold">Student Vault</span>
+                            <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="3"></path></svg>
+                        </a>
+                        <a href="/dashboard" class="flex items-center justify-between p-4 bg-white/5 rounded-2xl hover:bg-orange-500/10 border border-transparent hover:border-orange-500/20 transition-all">
+                            <span class="text-sm font-bold">Intelligence Dashboard</span>
+                            <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (data.success && data.role === 'admin') {
+                document.getElementById('loginView').classList.add('hidden');
+                document.getElementById('adminView').classList.remove('hidden');
+                loadAdminData();
+            } else {
+                alert('Master Key Rejected');
+            }
+        }
+
+        async function loadAdminData() {
+            const res = await fetch('/api/admin/users');
+            const users = await res.json();
+            
+            const table = document.getElementById('userTableBody');
+            table.innerHTML = '';
+            
+            let studentCount = 0;
+            let facultyCount = 0;
+
+            users.forEach(u => {
+                if (u.role === 'student') studentCount++;
+                if (u.role === 'faculty') facultyCount++;
+
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-white/5 hover:bg-white/[0.02] transition-all';
+                tr.innerHTML = `
+                    <td class="py-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 overflow-hidden">
+                                <img src="${u.photo_path || ''}" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=${u.name}&background=111&color=fff'">
+                            </div>
+                            <div>
+                                <p class="text-sm font-black">${u.name}</p>
+                                <p class="text-[9px] text-zinc-500 uppercase tracking-widest font-bold">${u.email}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="text-[9px] font-black uppercase px-2 py-1 rounded-lg ${u.role === 'faculty' ? 'bg-orange-500 text-black' : 'bg-zinc-800 text-zinc-400'}">${u.role}</span></td>
+                    <td class="text-[11px] font-bold text-zinc-500">${u.department || 'GLOBAL'}</td>
+                    <td class="text-right">
+                        <button onclick="deleteUser(${u.id})" class="text-red-500/40 hover:text-red-500 transition-all">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                        </button>
+                    </td>
+                `;
+                table.appendChild(tr);
+            });
+
+            document.getElementById('totalStudents').innerText = studentCount;
+            document.getElementById('totalFaculty').innerText = facultyCount;
+            
+            // Stats chart
+            const ctx = document.getElementById('adminChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Students', 'Faculty'],
+                    datasets: [{
+                        data: [studentCount, facultyCount],
+                        backgroundColor: ['#FF8C00', '#222'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { cutout: '80%', plugins: { legend: { display: false } } }
+            });
+        }
+
+        async function deleteUser(id) {
+            if (!confirm('Are you sure you want to terminate this identity?')) return;
+            const res = await fetch(`/api/admin/users/${id}`, { method: 'DELETE' });
+            if (res.ok) loadAdminData();
+        }
+    </script>
+</body>
+</html>

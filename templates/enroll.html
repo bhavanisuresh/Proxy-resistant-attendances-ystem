@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Enrollment | Smart Attendance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/dashboard_v2.css">
+    <style>
+        .form-card {
+            max-width: 600px;
+            width: 100%;
+            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .photo-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 20px;
+            border: 2px dashed var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.3s;
+        }
+        .photo-preview:hover {
+            border-color: var(--accent-orange);
+            background: rgba(255, 140, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 bg-black">
+    <div class="form-card glass p-10 rounded-[3rem] border border-orange-500/10">
+        <header class="text-center mb-10">
+            <h1 class="text-3xl font-black uppercase tracking-tighter mb-2">Student <span class="orange-accent">Enrollment</span></h1>
+            <p class="text-zinc-500 text-sm font-bold uppercase tracking-widest">Biometric Database Integration</p>
+        </header>
+
+        <form id="enrollForm" class="space-y-6">
+            <div class="flex justify-center mb-8">
+                <div class="photo-preview cursor-pointer" onclick="document.getElementById('photoInput').click()">
+                    <img id="previewImg" class="w-full h-full object-cover hidden">
+                    <div id="uploadPlaceholder" class="text-center">
+                        <svg class="w-8 h-8 text-zinc-700 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <p class="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">Upload Identity Photo</p>
+                    </div>
+                </div>
+                <input type="file" id="photoInput" class="hidden" accept="image/*" onchange="previewPhoto(this)">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-zinc-600 uppercase tracking-widest ml-2">Full Name</label>
+                    <input type="text" id="name" placeholder="e.g. John Doe" class="w-full" required>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-zinc-600 uppercase tracking-widest ml-2">Enrollment #</label>
+                    <input type="text" id="enrollment" placeholder="ENR00X" class="w-full" required>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="text-[10px] font-black text-zinc-600 uppercase tracking-widest ml-2">Email Address</label>
+                <input type="email" id="email" placeholder="student@smart.ai" class="w-full" required>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-zinc-600 uppercase tracking-widest ml-2">Department</label>
+                    <input type="text" id="department" placeholder="B.Tech CS" class="w-full" required>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-zinc-600 uppercase tracking-widest ml-2">Portal Password</label>
+                    <input type="password" id="password" placeholder="••••••••" class="w-full" required>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="text-[10px] font-black text-zinc-600 uppercase tracking-widest ml-2">Academic Summary</label>
+                <input type="text" id="academic" placeholder="Year 3, GPA 9.0" class="w-full">
+            </div>
+
+            <button type="submit" class="w-full btn-premium mt-6">ENROLL STUDENT</button>
+        </form>
+
+        <footer class="mt-10 text-center">
+            <a href="/" class="text-zinc-600 text-xs font-bold hover:text-orange-500 transition-colors uppercase tracking-widest">Back to Faculty Portal</a>
+        </footer>
+    </div>
+
+    <script>
+        function previewPhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('previewImg').classList.remove('hidden');
+                    document.getElementById('uploadPlaceholder').classList.add('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        document.getElementById('enrollForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const photoInput = document.getElementById('photoInput');
+            let photoBase64 = null;
+
+            if (photoInput.files[0]) {
+                const reader = new FileReader();
+                photoBase64 = await new Promise((resolve) => {
+                    reader.onload = () => resolve(reader.result);
+                    reader.readAsDataURL(photoInput.files[0]);
+                });
+            }
+
+            const data = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                enrollment: document.getElementById('enrollment').value,
+                department: document.getElementById('department').value,
+                password: document.getElementById('password').value,
+                academic: document.getElementById('academic').value,
+                photo: photoBase64
+            };
+
+            const res = await fetch('/api/faculty/add_student', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await res.json();
+            if (result.success) {
+                alert('Student enrolled successfully! The AI Engine is now retraining.');
+                location.href = '/';
+            } else {
+                alert('Enrollment failed: ' + (result.message || result.error || 'Unknown Error'));
+            }
+        };
+    </script>
+</body>
+</html>

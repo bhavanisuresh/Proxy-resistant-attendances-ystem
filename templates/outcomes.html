@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expected Outcomes | Smart Attendance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --orange-primary: #FF8C00;
+            --orange-dark: #cc7000;
+            --bg-dark: #0a0a0a;
+            --glass-bg: rgba(255, 140, 0, 0.05);
+            --glass-border: rgba(255, 140, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--orange-primary);
+            box-shadow: 0 20px 40px rgba(255, 140, 0, 0.1);
+            background: rgba(255, 140, 0, 0.08);
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 140, 0, 0.1),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 140, 0, 0.1);
+            border-radius: 12px;
+            display: flex;
+            items-center: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 140, 0, 0.2);
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 2px 2px, rgba(255, 140, 0, 0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+
+        .glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 140, 0, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: -1;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+        .delay-7 { animation-delay: 0.7s; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 lg:p-20">
+    <div class="grid-bg"></div>
+    <div class="glow top-0 left-0"></div>
+    <div class="glow bottom-0 right-0"></div>
+
+    <div class="max-w-6xl w-full">
+        <header class="text-center mb-16 animate-fade-in">
+            <h2 class="text-orange-500 font-bold tracking-widest uppercase text-sm mb-4">Project Impact</h2>
+            <h1 class="text-5xl lg:text-7xl font-bold mb-6">Expected <span class="gradient-text">Outcomes</span></h1>
+            <p class="text-zinc-400 text-lg max-w-2xl mx-auto">
+                Transforming educational accountability through autonomous AI monitoring and proxy-resistant biometric verification.
+            </p>
+        </header>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            <!-- Outcome 1 -->
+            <div class="glass-card p-8 animate-fade-in delay-1">
+                <div class="icon-box">
+                    <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-orange-400">Zero-Proxy Integrity</h3>
+                <p class="text-zinc-400 text-sm leading-relaxed">
+                    Eliminates attendance fraud and impersonation by 99.9% through multi-modal liveness detection and continuous validation.
+                </p>
+            </div>
+
+            <!-- Outcome 2 -->
+            <div class="glass-card p-8 animate-fade-in delay-2">
+                <div class="icon-box">
+                    <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-orange-400">Frictionless Automation</h3>
+                <p class="text-zinc-400 text-sm leading-relaxed">
+                    Seamlessly captures and logs attendance for entire batches in real-time, removing the burden of manual roll calls.
+                </p>
+            </div>
+
+            <!-- Outcome 3 -->
+            <div class="glass-card p-8 animate-fade-in delay-3">
+                <div class="icon-box">
+                    <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-orange-400">Dynamic Monitoring</h3>
+                <p class="text-zinc-400 text-sm leading-relaxed">
+                    Provides a live, real-time heat map of student engagement and presence, ensuring accountability throughout the session.
+                </p>
+            </div>
+
+            <!-- Outcome 4 -->
+            <div class="glass-card p-8 animate-fade-in delay-4">
+                <div class="icon-box">
+                    <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-orange-400">Data Transparency</h3>
+                <p class="text-zinc-400 text-sm leading-relaxed">
+                    Establishes a "Single Source of Truth" for attendance records, building immutable trust across the organization.
+                </p>
+            </div>
+
+            <!-- Outcome 5 -->
+            <div class="glass-card p-8 animate-fade-in delay-5">
+                <div class="icon-box">
+                    <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-orange-400">Operational Efficiency</h3>
+                <p class="text-zinc-400 text-sm leading-relaxed">
+                    Reclaims up to 15 minutes of instructional time per class by automating validation through high-speed AI vision.
+                </p>
+            </div>
+
+            <!-- Outcome 6 -->
+            <div class="glass-card p-8 animate-fade-in delay-6">
+                <div class="icon-box">
+                    <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-orange-400">Next-Gen Security</h3>
+                <p class="text-zinc-400 text-sm leading-relaxed">
+                    Leverages state-of-the-art anti-spoofing and behavioral analytics to safeguard against advanced identity theft.
+                </p>
+            </div>
+        </div>
+
+        <div class="glass-card p-10 animate-fade-in delay-7 border-orange-500/30">
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <div class="flex-1 text-center md:text-left">
+                    <h3 class="text-2xl font-bold mb-4">Future Scalability & <span class="text-orange-500">Smart Integration</span></h3>
+                    <p class="text-zinc-400">
+                        Smart Attendance is evolving into the backbone of the "Smart Classroom," integrating with adaptive learning systems and predictive success analytics to create a truly responsive educational environment.
+                    </p>
+                </div>
+                <a href="/" class="px-8 py-4 bg-orange-600 hover:bg-orange-500 text-black font-bold rounded-2xl transition-all shadow-lg shadow-orange-600/20 whitespace-nowrap">
+                    Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-20 text-zinc-600 text-xs uppercase tracking-widest animate-fade-in delay-7">
+        &copy; 2026 Smart Attendance Platform | Proxy-Resistant Intelligence
+    </footer>
+</body>
+</html>

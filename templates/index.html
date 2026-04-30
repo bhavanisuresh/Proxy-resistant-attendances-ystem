@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Portal | Smart Attendance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/dashboard_v2.css">
+</head>
+<body class="p-8">
+    <!-- Login View -->
+    <div id="loginView" class="fixed inset-0 z-50 flex items-center justify-center bg-black">
+        <div class="glass p-12 rounded-3xl w-full max-w-md text-center border-2 orange-border">
+            <h1 class="text-4xl font-bold mb-6 orange-accent">FACULTY LOGIN</h1>
+            <div class="space-y-4">
+                <input type="email" id="email" placeholder="Faculty Email" class="w-full">
+                <input type="password" id="password" placeholder="Password" class="w-full">
+                <button onclick="login()" class="w-full orange-bg text-black font-bold py-3 rounded-lg hover:bg-orange-500 transition-all">SIGN IN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard View -->
+    <div id="dashboardView" class="hidden">
+        <header class="flex justify-between items-center mb-10 border-b border-orange-900/50 pb-6">
+            <div>
+                <h2 class="text-3xl font-bold orange-accent">SMART ATTENDANCE</h2>
+                <p class="text-slate-400">Next-Gen Biometric Verification v4.0</p>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="/outcomes" class="text-orange-500 text-sm hover:underline">Outcomes</a>
+                <a href="/enroll" class="text-orange-500 text-sm hover:underline">Enroll Student</a>
+                <button onclick="logout()" class="text-orange-500 text-sm hover:underline">Logout</button>
+                <div class="glass px-4 py-2 rounded-xl">
+                    <p id="facultyName" class="font-bold orange-accent"></p>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid lg:grid-cols-12 gap-8">
+            <!-- Left Column: Video & Controls -->
+            <div class="lg:col-span-8 space-y-6">
+                <div class="relative rounded-[2.5rem] overflow-hidden border-2 border-orange-500/30 bg-zinc-950 aspect-video shadow-2xl shadow-orange-900/10">
+                    <video id="video" autoplay playsinline muted class="w-full h-full object-cover opacity-60"></video>
+                    <canvas id="overlay" class="absolute inset-0 w-full h-full"></canvas>
+                    
+                    <!-- HUD Badges Feature -->
+                    <div class="absolute bottom-8 left-0 right-0 flex justify-center gap-4">
+                        <div id="badge-face" class="hud-badge-v2">IDENTITY SECURED</div>
+                        <div id="badge-liveness" class="hud-badge-v2">BIO-LIVENESS OK</div>
+                        <div id="badge-focus" class="hud-badge-v2">GAZE SYNCHRONIZED</div>
+                    </div>
+                    
+                    <div class="absolute top-6 left-6 flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                        <div id="aiStatusBadge" class="glass px-4 py-2 rounded-full text-[10px] font-black orange-accent tracking-tighter uppercase">System Standby</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <button id="startBtn" onclick="toggleVerification(true)" class="btn-premium">START AI VERIFICATION</button>
+                    <button id="stopBtn" onclick="toggleVerification(false)" class="btn-premium-danger opacity-50 pointer-events-none">STOP VERIFICATION</button>
+                </div>
+            </div>
+
+            <!-- Right Column: Folders & Monitoring -->
+            <div class="lg:col-span-4 space-y-6 h-[650px] overflow-y-auto pr-2 custom-scrollbar">
+                <!-- Analytics Summary -->
+                <div class="glass p-6 rounded-3xl border border-orange-500/10">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xs font-black orange-accent uppercase tracking-widest">Live Engagement</h3>
+                        <span id="activeCount" class="text-xl font-bold text-white">0</span>
+                    </div>
+                    <div id="monitorCards" class="space-y-4">
+                        <p class="text-zinc-700 text-[10px] uppercase font-bold text-center py-10">Initializing Neural Mesh...</p>
+                    </div>
+                </div>
+
+                <!-- Present List Folder -->
+                <div class="glass p-6 rounded-3xl border border-zinc-900">
+                    <h3 class="text-xs font-black text-zinc-500 uppercase tracking-widest mb-4">Verified Attendance</h3>
+                    <div id="presentFolder" class="space-y-2">
+                        <p class="text-zinc-800 text-[10px] italic">Awaiting first verification...</p>
+                    </div>
+                </div>
+
+                <!-- Student Roster Folder -->
+                <div class="glass p-6 rounded-3xl border border-orange-500/10">
+                    <h3 class="text-xs font-black orange-accent uppercase tracking-widest mb-4">Enrolled Students Roster</h3>
+                    <div id="directoryList" class="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar">
+                        <!-- Populated by JS with photos -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isVerificationActive = false;
+
+        function toggleVerification(active) {
+            isVerificationActive = active;
+            
+            // UI State Management
+            const startBtn = document.getElementById('startBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            
+            if (active) {
+                startBtn.classList.add('opacity-50', 'pointer-events-none');
+                stopBtn.classList.remove('opacity-50', 'pointer-events-none');
+                document.getElementById('aiStatusBadge').innerText = 'AI VERIFICATION ACTIVE';
+            } else {
+                startBtn.classList.remove('opacity-50', 'pointer-events-none');
+                stopBtn.classList.add('opacity-50', 'pointer-events-none');
+                document.getElementById('aiStatusBadge').innerText = 'SYSTEM STANDBY';
+                
+                // Clear overlay
+                const canvas = document.getElementById('overlay');
+                canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Reset HUD
+                document.getElementById('badge-face').classList.remove('active');
+                document.getElementById('badge-liveness').classList.remove('active');
+                document.getElementById('badge-focus').classList.remove('active');
+            }
+        }
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (data.success && data.role === 'faculty') {
+                document.getElementById('loginView').classList.add('hidden');
+                document.getElementById('dashboardView').classList.remove('hidden');
+                document.getElementById('facultyName').innerText = data.name;
+                loadDirectory();
+                startCamera();
+            } else { alert('Invalid credentials'); }
+        }
+
+        async function startCamera() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('overlay');
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            video.onloadedmetadata = () => {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                heartbeat();
+            };
+        }
+
+        async function heartbeat() {
+            if (!isVerificationActive) { setTimeout(heartbeat, 1000); return; }
+            
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('overlay');
+            const ctx = canvas.getContext('2d');
+            const offscreen = document.createElement('canvas');
+            offscreen.width = video.videoWidth;
+            offscreen.height = video.videoHeight;
+            offscreen.getContext('2d').drawImage(video, 0, 0);
+
+            const res = await fetch('/api/monitor/heartbeat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: offscreen.toDataURL('image/jpeg', 0.5) })
+            });
+            const data = await res.json();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            let hasVerified = false, hasLiveness = false, hasFocus = false;
+
+            data.results.forEach(r => {
+                const [bx, by, bw, bh] = r.bbox;
+                const isSpoof = r.spoof_check === 'SPOOF DETECTED';
+                const awaitBlink = r.spoof_check === 'AWAITING BLINK';
+                const isVerified = r.status === 'Verified';
+
+                // ── Box Color ─────────────────────────────────────────────
+                if (isSpoof) {
+                    // Flashing red semi-transparent overlay
+                    ctx.fillStyle = 'rgba(220, 20, 20, 0.18)';
+                    ctx.fillRect(bx, by, bw, bh);
+                    ctx.strokeStyle = '#ff1a1a';
+                } else if (isVerified) {
+                    ctx.strokeStyle = '#FF8C00';
+                } else if (awaitBlink) {
+                    ctx.strokeStyle = '#facc15';  // yellow – waiting
+                } else {
+                    ctx.strokeStyle = '#6b7280';  // grey – unknown
+                }
+
+                ctx.lineWidth = isSpoof ? 4 : 2.5;
+                ctx.strokeRect(bx, by, bw, bh);
+
+                // ── Name Label ────────────────────────────────────────────
+                ctx.font = 'bold 13px Outfit, Arial';
+                let label, labelColor;
+
+                if (isSpoof) {
+                    label = '⚠ INVALID — PHOTO/SCREEN DETECTED';
+                    labelColor = '#ff1a1a';
+                } else if (awaitBlink) {
+                    label = `${r.name !== 'Unknown' ? r.name : '?'} — BLINK TO VERIFY`;
+                    labelColor = '#facc15';
+                } else if (isVerified) {
+                    label = `✓ ${r.name}  |  ${r.confidence}%  |  LIVE`;
+                    labelColor = '#FF8C00';
+                } else {
+                    label = 'UNREGISTERED PERSON';
+                    labelColor = '#6b7280';
+                }
+
+                // Background pill for label
+                const padding = 6;
+                const textW = ctx.measureText(label).width;
+                ctx.fillStyle = isSpoof ? 'rgba(200,0,0,0.85)' : 'rgba(0,0,0,0.75)';
+                ctx.beginPath();
+                ctx.roundRect(bx, by - 28, textW + padding * 2, 24, 6);
+                ctx.fill();
+
+                ctx.fillStyle = labelColor;
+                ctx.fillText(label, bx + padding, by - 10);
+
+                // ── SPOOF BIG WARNING ─────────────────────────────────────
+                if (isSpoof) {
+                    ctx.font = 'bold 22px Outfit, Arial';
+                    ctx.fillStyle = 'rgba(255,26,26,0.9)';
+                    const warnText = 'NOT DETECTED';
+                    const warnW = ctx.measureText(warnText).width;
+                    ctx.fillText(warnText, bx + bw/2 - warnW/2, by + bh/2 + 8);
+
+                    // Sub-label
+                    ctx.font = 'bold 11px Outfit, Arial';
+                    ctx.fillStyle = 'rgba(255,100,100,0.8)';
+                    const sub = r.spoof_reasons ? r.spoof_reasons.join(' | ') : 'Anti-spoof check failed';
+                    const subW = ctx.measureText(sub).width;
+                    ctx.fillText(sub, bx + bw/2 - subW/2, by + bh/2 + 26);
+                }
+
+                // ── Update HUD Badges ─────────────────────────────────────
+                if (isVerified)   hasVerified = true;
+                if (r.liveness)   hasLiveness = true;
+                if (r.focus > 0.6) hasFocus = true;
+            });
+
+            // Update HUD
+            document.getElementById('badge-face').classList.toggle('active', hasVerified);
+            document.getElementById('badge-liveness').classList.toggle('active', hasLiveness);
+            document.getElementById('badge-focus').classList.toggle('active', hasFocus);
+
+            // Status badge text
+            const statusBadge = document.getElementById('aiStatusBadge');
+            const hasSpoof = data.results.some(r => r.spoof_check === 'SPOOF DETECTED');
+            if (hasSpoof) {
+                statusBadge.innerText = '⚠ SPOOF ATTEMPT BLOCKED';
+                statusBadge.style.color = '#ff4444';
+            } else if (hasVerified) {
+                statusBadge.innerText = '✓ IDENTITY VERIFIED';
+                statusBadge.style.color = '#FF8C00';
+            } else {
+                statusBadge.innerText = 'AI VERIFICATION ACTIVE';
+                statusBadge.style.color = '';
+            }
+
+            updateFolders();
+            setTimeout(heartbeat, 1000);
+        }
+
+        async function loadDirectory() {
+            const res = await fetch('/api/faculty/students');
+            const data = await res.json();
+            const list = document.getElementById('directoryList');
+            list.innerHTML = '';
+            data.forEach(s => {
+                const item = document.createElement('div');
+                item.className = 'flex items-center gap-3 p-3 bg-zinc-950/50 rounded-2xl border border-zinc-900';
+                item.innerHTML = `
+                    <div class="w-10 h-10 rounded-full overflow-hidden border border-orange-500/20 bg-zinc-900">
+                        <img src="${s.photo_path || '/static/img/placeholder.jpg'}" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=${s.name}&background=ff8c00&color=000'">
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-[11px] font-black text-white leading-none mb-1">${s.name}</p>
+                        <p class="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">${s.enrollment_number}</p>
+                    </div>
+                    <div class="text-[9px] font-black orange-accent uppercase">Verified</div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        async function updateFolders() {
+            const res = await fetch('/api/faculty/present_list');
+            const presentData = await res.json();
+            
+            // Update Present Folder
+            const folder = document.getElementById('presentFolder');
+            folder.innerHTML = '';
+            presentData.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'p-3 bg-zinc-900 rounded-xl border border-orange-500/20 flex justify-between items-center';
+                item.innerHTML = `<div><p class="font-bold orange-accent text-sm">${p.name}</p><p class="text-[10px] text-zinc-500">${p.enrollment_number}</p></div><span class="w-2 h-2 rounded-full bg-green-500"></span>`;
+                folder.appendChild(item);
+            });
+
+            // Update Monitoring Cards
+            const monitor = document.getElementById('monitorCards');
+            monitor.innerHTML = '';
+            presentData.forEach(p => {
+                const focusVal = Math.floor(Math.random() * 30) + 70; // Simulated for demo
+                const color = focusVal > 80 ? 'var(--accent-green)' : 'var(--accent-orange)';
+                
+                const card = document.createElement('div');
+                card.className = 'monitor-card';
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-sm">${p.name}</span>
+                        <span class="text-[10px] uppercase font-bold" style="color: ${color}">${focusVal > 80 ? 'Low' : 'Medium'} Risk</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-fill" style="width: ${focusVal}%; background: ${color}"></div>
+                    </div>
+                    <div class="flex justify-between text-[10px] text-zinc-500">
+                        <span>Focus Score</span>
+                        <span class="text-green-500">Present</span>
+                    </div>
+                `;
+                monitor.appendChild(card);
+            });
+        }
+
+        function logout() { location.reload(); }
+    </script>
+</body>
+</html>
