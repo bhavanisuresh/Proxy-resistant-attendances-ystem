@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-dark: #000000;
+    --accent-orange: #FF8C00;
+    --accent-red: #ef4444;
+    --accent-green: #10b981;
+    --glass-bg: rgba(255, 140, 0, 0.05);
+    --glass-border: rgba(255, 140, 0, 0.2);
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: "Times New Roman", Times, serif;
+}
+
+.orange-accent {
+    color: var(--accent-orange);
+}
+
+.orange-bg {
+    background-color: var(--accent-orange);
+}
+
+.orange-border {
+    border-color: var(--accent-orange);
+}
+
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+}
+
+/* Feature: Monitoring Cards */
+.monitor-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 140, 0, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.progress-container {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.5s ease;
+}
+
+/* Feature: HUD Badges */
+.hud-badge {
+    padding: 0.4rem 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+}
+
+.hud-badge.active {
+    background: rgba(255, 140, 0, 0.2);
+    border-color: var(--accent-orange);
+    color: var(--accent-orange);
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--accent-orange);
+    color: black;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--accent-orange);
+    color: var(--accent-orange);
+}
+
+input {
+    background: #111;
+    border: 1px solid #333;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
