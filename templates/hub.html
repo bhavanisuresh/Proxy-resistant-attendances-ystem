@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Attendance | Unified Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --orange: #FF8C00;
+            --orange-dim: rgba(255, 140, 0, 0.15);
+            --bg: #050505;
+            --surface: #111111;
+            --border: rgba(255,255,255,0.07);
+            --text: #ffffff;
+            --muted: #555;
+            --sidebar-w: 220px;
+            --topbar-h: 52px;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── TOP BAR ── */
+        #topbar {
+            height: var(--topbar-h);
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 14px;
+            flex-shrink: 0;
+            z-index: 100;
+        }
+
+        .logo-mark {
+            width: 32px; height: 32px;
+            background: var(--orange);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transform: rotate(12deg);
+        }
+        .logo-mark svg { width: 16px; height: 16px; color: #000; stroke: #000; }
+
+        #topbar h1 {
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--text);
+        }
+        #topbar h1 span { color: var(--orange); }
+
+        .topbar-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse-green 2s ease-in-out infinite;
+        }
+        @keyframes pulse-green {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); }
+            50% { box-shadow: 0 0 0 5px rgba(34,197,94,0); }
+        }
+
+        .status-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #22c55e;
+        }
+
+        .current-page-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--muted);
+            padding: 4px 12px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+        .current-page-label span { color: var(--orange); }
+
+        /* ── BODY BELOW TOPBAR ── */
+        #layout {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* ── SIDEBAR ── */
+        #sidebar {
+            width: var(--sidebar-w);
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 16px 10px;
+            gap: 4px;
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+
+        .nav-section-label {
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding: 8px 10px 4px;
+            margin-top: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: #888;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--text);
+        }
+        .nav-item.active {
+            background: var(--orange-dim);
+            border-color: rgba(255,140,0,0.3);
+            color: var(--orange);
+        }
+
+        .nav-icon {
+            width: 32px; height: 32px;
+            border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.05);
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+        .nav-item.active .nav-icon { background: var(--orange); }
+        .nav-item.active .nav-icon svg { stroke: #000; }
+        .nav-icon svg { width: 14px; height: 14px; stroke: #666; stroke-width: 2; fill: none; }
+
+        .nav-badge {
+            margin-left: auto;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 20px;
+            background: var(--orange);
+            color: #000;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── IFRAME CONTAINER ── */
+        #frame-wrapper {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #portal-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* Loading overlay */
+        #frame-loader {
+            position: absolute;
+            inset: 0;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            z-index: 10;
+            transition: opacity 0.4s ease;
+        }
+        #frame-loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-ring {
+            width: 48px; height: 48px;
+            border: 3px solid rgba(255,140,0,0.15);
+            border-top-color: var(--orange);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loader-text {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        /* ── SIDEBAR FOOTER ── */
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .server-info {
+            padding: 10px 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        .server-info .label {
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+        .server-info .url {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--orange);
+            font-family: monospace;
+        }
+
+        /* Scrollbar */
+        #sidebar::-webkit-scrollbar { width: 4px; }
+        #sidebar::-webkit-scrollbar-track { background: transparent; }
+        #sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div id="topbar">
+        <div class="logo-mark">
+            <svg viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <h1>SMART <span>ATTENDANCE</span></h1>
+        <div class="current-page-label">Viewing: <span id="current-label">Landing</span></div>
+        <div class="topbar-right">
+            <div class="status-dot"></div>
+            <span class="status-label">Server Live · :5005</span>
+        </div>
+    </div>
+
+    <!-- MAIN LAYOUT -->
+    <div id="layout">
+
+        <!-- SIDEBAR -->
+        <nav id="sidebar">
+            <span class="nav-section-label">Main</span>
+
+            <div class="nav-item active" onclick="navigate('/', 'Landing', this)">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/></svg>
+                </div>
+                Landing
+            </div>
+
+            <span class="nav-section-label">Portals</span>
+
+            <div class="nav-item" onclick="navigate('/faculty', 'Faculty Portal', this)">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/></svg>
+                </div>
+                Faculty Portal
+                <span class="nav-badge">LIVE</span>
+            </div>
+
+            <div class="nav-item" onclick="navigate('/student', 'Student Vault', this)">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                </div>
+                Student Vault
+            </div>
+
+            <div class="nav-item" onclick="navigate('/admin', 'Admin Command', this)">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                </div>
+                Admin Command
+            </div>
+
+            <span class="nav-section-label">Analytics</span>
+
+            <div class="nav-item" onclick="navigate('/dashboard', 'Dashboard', this)">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                </div>
+                Dashboard
+            </div>
+
+            <div class="nav-item" onclick="navigate('/outcomes', 'Outcomes', this)">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                </div>
+                Outcomes
+            </div>
+
+            <span class="nav-section-label">Enrollment</span>
+
+            <div class="nav-item" onclick="navigate('/enroll', 'Bulk Enroll', this)">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                </div>
+                Bulk Enroll
+            </div>
+
+            <!-- Server Info -->
+            <div class="sidebar-footer">
+                <div class="server-info">
+                    <div class="label">Server</div>
+                    <div class="url">127.0.0.1:5005</div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- IFRAME WRAPPER -->
+        <div id="frame-wrapper">
+            <div id="frame-loader">
+                <div class="loader-ring"></div>
+                <div class="loader-text">Loading Portal…</div>
+            </div>
+            <iframe id="portal-frame" src="/" title="Portal Frame" onload="frameLoaded()"></iframe>
+        </div>
+
+    </div>
+
+    <script>
+        const frame = document.getElementById('portal-frame');
+        const loader = document.getElementById('frame-loader');
+        const label  = document.getElementById('current-label');
+        let activeItem = document.querySelector('.nav-item.active');
+
+        function navigate(path, name, el) {
+            // Show loader
+            loader.classList.remove('hidden');
+
+            // Update active nav
+            if (activeItem) activeItem.classList.remove('active');
+            el.classList.add('active');
+            activeItem = el;
+
+            // Update label
+            label.textContent = name;
+
+            // Load iframe
+            frame.src = path;
+        }
+
+        function frameLoaded() {
+            // Small delay for smooth transition
+            setTimeout(() => {
+                loader.classList.add('hidden');
+            }, 200);
+        }
+
+        // Initial load — hide loader once ready
+        window.addEventListener('load', () => {
+            setTimeout(() => loader.classList.add('hidden'), 600);
+        });
+    </script>
+
+</body>
+</html>
