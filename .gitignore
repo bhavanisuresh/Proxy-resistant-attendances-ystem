@@ -1,0 +1,7 @@
+__pycache__/
+*.db
+.DS_Store
+scratch/
+static/students/*.jpg
+static/students/*.jpeg
+static/students/*.png
