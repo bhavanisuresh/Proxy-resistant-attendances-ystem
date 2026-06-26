@@ -56,6 +56,16 @@ An advanced, AI-driven attendance and behavior monitoring platform designed to e
    - **Faculty Portal**: `http://127.0.0.1:5005/faculty`
    - **Student Vault**: `http://127.0.0.1:5005/student`
 
+### **🔑 Default Login Credentials**
+
+For testing and evaluation, you can log in using the following pre-configured accounts:
+
+| Role | Email / Identifier | Password |
+| :--- | :--- | :--- |
+| **Faculty** | `faculty@smart.ai` | `password123` |
+| **Student** | `gangadharreddy1432@gmail.com` | `student123` |
+| **Admin** | `admin@smart.ai` | `admin123` |
+
 ---
 
 ## 📸 **System Preview**
