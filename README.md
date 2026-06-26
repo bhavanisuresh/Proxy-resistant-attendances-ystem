@@ -59,9 +59,9 @@ https://proxy-resistant-attendance-system.onrender.com/
    ```
 
 4. **Access the Portals:**
-   - **Main Hub**: `http://127.0.0.1:5005/hub`
-   - **Faculty Portal**: `http://127.0.0.1:5005/faculty`
-   - **Student Vault**: `http://127.0.0.1:5005/student`
+   - **Main Hub**: https://proxy-resistant-attendance-system.onrender.com/
+   - **Faculty Portal**: https://proxy-resistant-attendance-system.onrender.com/faculty
+   - **Student Vault**: https://proxy-resistant-attendance-system.onrender.com/student
 
 ### **🔑 Default Login Credentials**
 
