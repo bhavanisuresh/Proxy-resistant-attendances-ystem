@@ -1,5 +1,8 @@
 # 🛡️ Proxy-Resistant AI Attendance System
 
+<img width="1470" height="832" alt="Screenshot 2026-06-26 at 12 55 18 PM" src="https://github.com/user-attachments/assets/7fdff7ad-6165-4608-809b-623d9ef60ba0" />
+
+
 ### **Next-Gen Classroom Intelligence & Biometric Verification**
 
 An advanced, AI-driven attendance and behavior monitoring platform designed to eliminate proxy attendance through multi-factor biometric identity verification and real-time engagement tracking.
