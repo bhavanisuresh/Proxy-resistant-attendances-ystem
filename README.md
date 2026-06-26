@@ -73,7 +73,7 @@ For testing and evaluation, you can log in using the following pre-configured ac
 ### **1. Landing / Unified Hub**
 ![Landing Hub](static/screenshots/landing_hub.png)
 
-### **2. Live Biometric Verification (Faculty Portal)**
+### **2. Live Face Verification (Faculty Portal)**
 ![Live Verification](static/screenshots/live_verification.png)
 
 ### **3. Student Enrollment**
