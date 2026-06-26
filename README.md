@@ -59,9 +59,9 @@ https://proxy-resistant-attendance-system.onrender.com/
    ```
 
 4. **Access the Portals:**
-   - **Main Hub**: https://proxy-resistant-attendance-system.onrender.com/
-   - **Faculty Portal**: https://proxy-resistant-attendance-system.onrender.com/faculty
-   - **Student Vault**: https://proxy-resistant-attendance-system.onrender.com/student
+   - **Main Hub**: [https://proxy-resistant-attendance-system.onrender.com/](url)
+   - **Faculty Portal**: [https://proxy-resistant-attendance-system.onrender.com/faculty](url)
+   - **Student Vault**: [https://proxy-resistant-attendance-system.onrender.com/student](url)
 
 ### **🔑 Default Login Credentials**
 
