@@ -55,14 +55,9 @@ matplotlib==3.10.8
 matplotlib-inline==0.2.1
 mdurl==0.1.2
 mediapipe==0.10.35
-ml_dtypes==0.5.4
-ml_math_lib @ file:///Users/gangadharreddy/Desktop/ml_math_lib
-namex==0.1.0
-narwhals==2.20.0
-nest-asyncio==1.6.0
-numpy==2.4.2
-opencv-contrib-python==4.13.0.92
-opencv-python==4.13.0.92
+opencv-contrib-python-headless==4.9.0.80
+gunicorn==21.2.0
+numpy==1.26.4
 opt_einsum==3.4.0
 optree==0.19.0
 packaging==26.0
