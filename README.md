@@ -9,7 +9,7 @@ An advanced, AI-driven attendance and behavior monitoring platform designed to e
 
 ## Live Application 
 
-https://proxy-resistant-attendance-system.onrender.com/
+[Click here to open](https://proxy-resistant-attendance-system.onrender.com/)
 
 ---
 
