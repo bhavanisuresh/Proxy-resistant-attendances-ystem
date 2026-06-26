@@ -7,7 +7,9 @@
 
 An advanced, AI-driven attendance and behavior monitoring platform designed to eliminate proxy attendance through multi-factor biometric identity verification and real-time engagement tracking.
 
-🔗 **Live Application**: [https://job-portal-frontend-195k.onrender.com/](https://job-portal-frontend-195k.onrender.com/)
+## Live Application 
+
+https://proxy-resistant-attendance-system.onrender.com/
 
 ---
 
