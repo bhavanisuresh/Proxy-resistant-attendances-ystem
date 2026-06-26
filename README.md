@@ -70,9 +70,20 @@ For testing and evaluation, you can log in using the following pre-configured ac
 
 ## 📸 **System Preview**
 
-| Unified Hub | Live Monitoring | Analytics |
-| :---: | :---: | :---: |
-| ![Hub](https://via.placeholder.com/400x250?text=Unified+Hub+Interface) | ![Monitor](https://via.placeholder.com/400x250?text=AI+Monitoring+HUD) | ![Dashboard](https://via.placeholder.com/400x250?text=Intelligence+Dashboard) |
+### **1. Landing / Unified Hub**
+![Landing Hub](static/screenshots/landing_hub.png)
+
+### **2. Live Biometric Verification (Faculty Portal)**
+![Live Verification](static/screenshots/live_verification.png)
+
+### **3. Student Enrollment**
+![Student Enrollment](static/screenshots/student_enrollment.png)
+
+### **4. Analytics & Trends Dashboard**
+![Analytics Dashboard](static/screenshots/analytics_dashboard.png)
+
+### **5. Admin Control Center (Directory Management)**
+![Admin Panel](static/screenshots/admin_panel.png)
 
 ---
 
