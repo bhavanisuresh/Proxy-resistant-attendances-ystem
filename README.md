@@ -106,4 +106,4 @@ For testing and evaluation, you can log in using the following pre-configured ac
 - **Gangadhar Reddy** - Lead Intelligence Developer & System Architect
 
 ---
-*Built for the [Hackathon Name] Hackathon 2026.*
+
