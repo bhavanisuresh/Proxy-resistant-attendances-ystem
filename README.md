@@ -59,9 +59,9 @@ An advanced, AI-driven attendance and behavior monitoring platform designed to e
    ```
 
 4. **Access the Portals:**
-   - **Main Hub**: [https://proxy-resistant-attendance-system.onrender.com/](url)
-   - **Faculty Portal**: [https://proxy-resistant-attendance-system.onrender.com/faculty](url)
-   - **Student Vault**: [https://proxy-resistant-attendance-system.onrender.com/student](url)
+   - **Main Hub**: [Open](url)
+   - **Faculty Portal**: [Open](url)
+   - **Student Vault**: [Open](url)
 
 ### **🔑 Default Login Credentials**
 
